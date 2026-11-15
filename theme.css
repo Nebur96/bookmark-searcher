@@ -1,0 +1,62 @@
+/* Shared design tokens and components for the popup and settings page. */
+
+/* Every accent shade derives from --accent-base, which settings.js sets from the user's pick. */
+:root {
+  --accent-base: #16a34a;
+  --accent: var(--accent-base);
+  --accent-strong: color-mix(in oklab, var(--accent-base) 78%, black);
+  --accent-soft: color-mix(in srgb, var(--accent-base) 11%, white);
+  --accent-ring: color-mix(in srgb, var(--accent-base) 25%, transparent);
+  --bg: #f4f6f5; --surface: #ffffff; --surface-2: #f6f8f7; --fg: #17201b; --muted: #68736d;
+  --border: #e2e7e4; --danger: #dc2626; --danger-soft: #fdecec;
+  --shadow: 0 1px 2px rgba(16, 24, 20, .05), 0 6px 20px rgba(16, 24, 20, .06);
+  --radius: 12px; --row-pad: 8px; --tile: 30px; --title-size: 13px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --accent: color-mix(in oklab, var(--accent-base) 85%, white);
+    --accent-strong: color-mix(in oklab, var(--accent-base) 60%, white);
+    --accent-soft: color-mix(in srgb, var(--accent-base) 15%, transparent);
+    --accent-ring: color-mix(in srgb, var(--accent-base) 32%, transparent);
+    --bg: #101312; --surface: #191d1b; --surface-2: #212623; --fg: #e6ebe8; --muted: #8e9993;
+    --border: #2b312e; --danger: #f87171; --danger-soft: rgba(248, 113, 113, .12);
+    --shadow: none;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --accent: color-mix(in oklab, var(--accent-base) 85%, white);
+  --accent-strong: color-mix(in oklab, var(--accent-base) 60%, white);
+  --accent-soft: color-mix(in srgb, var(--accent-base) 15%, transparent);
+  --accent-ring: color-mix(in srgb, var(--accent-base) 32%, transparent);
+  --bg: #101312; --surface: #191d1b; --surface-2: #212623; --fg: #e6ebe8; --muted: #8e9993;
+  --border: #2b312e; --danger: #f87171; --danger-soft: rgba(248, 113, 113, .12);
+  --shadow: none;
+  color-scheme: dark;
+}
+:root[data-density="compact"] { --row-pad: 4px; --tile: 22px; --title-size: 12.5px; }
+
+* { box-sizing: border-box; }
+body { margin: 0; color: var(--fg); font: 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif; }
+svg { display: block; flex: none; }
+
+.brand { display: flex; align-items: center; gap: 9px; font-weight: 650; font-size: 14px; letter-spacing: -.01em; }
+.logo { width: 24px; height: 24px; border-radius: 7px; display: grid; place-items: center;
+        background: linear-gradient(135deg, color-mix(in oklab, var(--accent-base) 80%, white),
+                                            color-mix(in oklab, var(--accent-base) 80%, black)); color: #fff; }
+
+.icon-btn { width: 30px; height: 30px; display: grid; place-items: center; padding: 0; border-radius: 8px;
+            border: 1px solid transparent; background: transparent; color: var(--muted); cursor: pointer; }
+.icon-btn:hover { background: var(--surface-2); color: var(--fg); border-color: var(--border); }
+
+kbd { font: 500 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace; padding: 3px 6px; border-radius: 5px;
+      border: 1px solid var(--border); border-bottom-width: 2px; background: var(--surface); color: var(--muted); }
+
+.btn { font: inherit; font-weight: 500; padding: 7px 14px; border-radius: 8px; cursor: pointer; white-space: nowrap;
+       border: 1px solid var(--border); background: var(--surface); color: var(--fg); }
+.btn:hover { background: var(--surface-2); }
+.btn.danger { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 45%, transparent); }
+.btn.danger:hover { background: var(--danger-soft); }
+.btn:disabled { opacity: .45; cursor: default; background: var(--surface); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

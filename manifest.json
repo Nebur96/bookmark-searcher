@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "Bookmark Search",
+  "version": "1.1.0",
+  "description": "Fuzzy-search your bookmarks from a hotkey and jump straight to them.",
+  "permissions": [
+    "bookmarks",
+    "storage",
+    "tabs",
+    "favicon"
+  ],
+  "action": {
+    "default_title": "Bookmark Search",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "omnibox": {
+    "keyword": "b"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+K",
+        "mac": "Command+Shift+K"
+      },
+      "description": "Open Bookmark Search"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  }
+}

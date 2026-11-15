@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="theme-init.js"></script>
+  <link rel="stylesheet" href="theme.css">
+  <style>
+    body { width: 600px; background: var(--surface); }
+
+    header { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px 0 14px; }
+
+    .search { display: flex; align-items: center; gap: 10px; margin: 10px 12px 0; padding: 0 12px; height: 44px;
+              border: 1.5px solid var(--border); border-radius: 10px; background: var(--surface-2); color: var(--muted);
+              transition: border-color .12s, box-shadow .12s, background .12s; }
+    .search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-ring); background: var(--surface); }
+    .search input { flex: 1; min-width: 0; border: 0; outline: none; background: transparent; color: var(--fg);
+                    font: inherit; font-size: 15px; }
+    .search input::placeholder { color: var(--muted); }
+
+    .meta { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px 4px;
+            font-size: 11px; color: var(--muted); }
+    .meta .section { display: inline-flex; align-items: center; gap: 5px; font-weight: 600;
+                     text-transform: uppercase; letter-spacing: .05em; }
+
+    ul { list-style: none; margin: 0; padding: 2px 8px 8px; max-height: 400px; overflow-y: auto; }
+    li { position: relative; display: flex; align-items: center; gap: 11px; padding: var(--row-pad) 10px;
+         border-radius: 9px; cursor: pointer; }
+    li:hover { background: var(--surface-2); }
+    li.selected { background: var(--accent-soft); }
+    li.selected::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px;
+                          border-radius: 3px; background: var(--accent); }
+    .tile { width: var(--tile); height: var(--tile); flex: none; display: grid; place-items: center;
+            border-radius: 8px; background: var(--surface); border: 1px solid var(--border); }
+    .tile img { width: 16px; height: 16px; }
+    .text { flex: 1; min-width: 0; }
+    .title { font-size: var(--title-size); font-weight: 550; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .crumbs { display: flex; align-items: center; gap: 4px; margin-top: 1px; font-size: 11px; color: var(--muted);
+              white-space: nowrap; overflow: hidden; }
+    .crumbs svg { color: var(--accent); }
+    .crumbs .sep { opacity: .5; }
+    .crumbs .host { margin-right: 6px; overflow: hidden; text-overflow: ellipsis; flex: none; max-width: 45%; }
+    .crumbs .host:last-child { max-width: none; }
+    #stats.flash { color: var(--accent-strong); font-weight: 600; }
+    :root[data-density="compact"] .crumbs { display: none; }
+    .pin { display: none; width: 26px; height: 26px; place-items: center; padding: 0; border: 0; border-radius: 7px;
+           background: none; color: var(--muted); cursor: pointer; }
+    .pin:hover { background: var(--surface); color: var(--fg); }
+    li:hover .pin, li.selected .pin, li.pinned .pin { display: grid; }
+    li.pinned .pin { color: var(--accent-strong); }
+    li.pinned .pin svg { fill: currentColor; }
+    .enter { display: none; color: var(--accent-strong); }
+    li.selected .enter { display: block; }
+
+    .empty { margin: 8px; padding: 28px 16px; text-align: center; color: var(--muted);
+             border: 1.5px dashed var(--border); border-radius: 10px; }
+
+    footer { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 9px 16px; border-top: 1px solid var(--border);
+             background: var(--surface-2); color: var(--muted); font-size: 11px; }
+    footer span { display: inline-flex; align-items: center; gap: 6px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand"><span class="logo" id="logo"></span>Bookmark Search</div>
+    <button class="icon-btn" id="settings" title="Settings" aria-label="Settings"></button>
+  </header>
+  <label class="search">
+    <span id="search-icon"></span>
+    <input id="q" placeholder="Search bookmarks and folders…" autofocus autocomplete="off" spellcheck="false">
+    <kbd>esc</kbd>
+  </label>
+  <div class="meta"><span class="section" id="section"></span><span id="stats"></span></div>
+  <ul id="results"></ul>
+  <footer>
+    <span><kbd>↵</kbd> open</span>
+    <span><kbd data-keys="shift ↵">⇧ ↵</kbd> this tab</span>
+    <span><kbd data-keys="mod ↵">⌘ ↵</kbd> background</span>
+    <span><kbd data-keys="alt ↵">⌥ ↵</kbd> new window</span>
+    <span><kbd data-keys="mod C">⌘ C</kbd> copy link</span>
+    <span><kbd data-keys="alt P">⌥ P</kbd> pin</span>
+  </footer>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
