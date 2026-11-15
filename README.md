@@ -28,3 +28,11 @@ npm test
 ```
 
 The tests run `search.js` in Node with a stand-in for the `chrome` API (`test/fake-chrome.js`).
+
+## Icons
+
+The logo is drawn by `logo.js`, which is also used for the logo in the popup and Settings and for the toolbar icon in your accent colour. After changing it, regenerate the PNGs in `icons/` (needs Google Chrome; set `CHROME` to use another Chromium binary):
+
+```sh
+node scripts/make-icons.mjs
+```
