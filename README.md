@@ -18,3 +18,13 @@ A Chrome extension to fuzzy-search your bookmarks from a hotkey and jump straigh
 3. Click **Load unpacked** and select the repo folder.
 
 To change the hotkey, go to `chrome://extensions/shortcuts`.
+
+## Tests
+
+The search ranking, highlighting, tab switching and pruning in `search.js` are tested with Node's built-in test runner, so there's nothing to install (Node 20+):
+
+```sh
+npm test
+```
+
+The tests run `search.js` in Node with a stand-in for the `chrome` API (`test/fake-chrome.js`).
