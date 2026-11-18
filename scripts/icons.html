@@ -1,0 +1,17 @@
+<!doctype html>
+<!-- Loaded by make-icons.mjs in headless Chrome: draws each icon size and prints them as data URLs. -->
+<meta charset="utf-8">
+<pre id="out"></pre>
+<script type="module">
+  import { drawLogo } from '../logo.js';
+  import { DEFAULTS } from '../settings.js';
+
+  const out = {};
+  for (const size of [16, 32, 48, 128]) {
+    const canvas = document.createElement('canvas');
+    canvas.width = canvas.height = size;
+    drawLogo(canvas.getContext('2d'), size, DEFAULTS.accent);
+    out[size] = canvas.toDataURL('image/png');
+  }
+  document.getElementById('out').textContent = JSON.stringify(out);
+</script>

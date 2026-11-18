@@ -9,7 +9,7 @@ const list = document.getElementById('results');
 const section = document.getElementById('section');
 
 labelKeys();
-document.getElementById('logo').innerHTML = icons.bookmark();
+document.getElementById('logo').innerHTML = icons.logo();
 document.getElementById('search-icon').innerHTML = icons.search();
 document.getElementById('settings').innerHTML = icons.settings();
 

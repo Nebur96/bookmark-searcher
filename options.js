@@ -13,7 +13,7 @@ const toggleButton = document.getElementById('usage-toggle');
 const themeGroup = document.getElementById('theme');
 const compactSwitch = document.getElementById('compact');
 
-document.getElementById('logo').innerHTML = icons.bookmark(18);
+document.getElementById('logo').innerHTML = icons.logo(20);
 
 const faviconUrl = (pageUrl) =>
   `chrome-extension://${chrome.runtime.id}/_favicon/?pageUrl=${encodeURIComponent(pageUrl)}&size=32`;

@@ -1,6 +1,7 @@
 // Address-bar mode: type "b", then Space, then your query.
 import { loadBookmarks, rank, matchedOffsets, getUsage, openUrl } from './search.js';
-import { getSettings } from './settings.js';
+import { getSettings, DEFAULTS } from './settings.js';
+import { drawLogo } from './logo.js';
 
 const MAX_SUGGESTIONS = 8;
 
@@ -21,14 +22,33 @@ for (const event of [chrome.bookmarks.onCreated, chrome.bookmarks.onRemoved, chr
   chrome.bookmarks.onMoved, chrome.bookmarks.onChildrenReordered, chrome.bookmarks.onImportEnded]) {
   event.addListener(() => { bookmarksCache = null; });
 }
+// The toolbar icon in the user's accent colour; the manifest's PNGs are the default green.
+// Chrome keeps an icon set this way until it restarts, so it's redrawn on startup and on change.
+async function drawToolbarIcon(accent) {
+  accent ??= (await getSettings()).accent;
+  const imageData = {};
+  for (const size of [16, 32]) {
+    const ctx = new OffscreenCanvas(size, size).getContext('2d');
+    drawLogo(ctx, size, accent);
+    imageData[size] = ctx.getImageData(0, 0, size, size);
+  }
+  await chrome.action.setIcon({ imageData });
+}
+chrome.runtime.onStartup.addListener(() => drawToolbarIcon());
+
 // One-off data migrations, run once per install or update rather than on every use.
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.remove('recent'); // the old recently-opened list, superseded by usage
+  drawToolbarIcon();
 });
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== 'local') return;
-  if (changes.settings) bookmarksCache = null; // the search scope may have changed
+  if (changes.settings) {
+    bookmarksCache = null; // the search scope may have changed
+    const accent = changes.settings.newValue?.accent ?? DEFAULTS.accent;
+    if (accent !== changes.settings.oldValue?.accent) drawToolbarIcon(accent);
+  }
   if (changes.usage) usageCache = null;
 });
 
