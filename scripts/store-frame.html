@@ -1,0 +1,77 @@
+<!doctype html>
+<!-- One Chrome Web Store image: a caption beside the popup or Settings page, which run in an iframe
+     on made-up bookmarks (store-demo.js). make-store-images.mjs opens it as store-frame.html?shot=<name>. -->
+<meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+  html, body { height: 100%; overflow: hidden; }
+  body { display: flex; align-items: center; gap: 56px; padding: 0 64px; box-sizing: border-box;
+         background: linear-gradient(150deg, #f3fbf6, #d9f2e3); color: #17201b; }
+  body.dark { background: linear-gradient(150deg, #13201a, #08130d); color: #e6ebe8; }
+  .copy { flex: 1; }
+  .brand { font-size: 20px; gap: 12px; margin-bottom: 36px; }
+  .brand .logo { width: 40px; height: 40px; border-radius: 11px; }
+  h1 { font-size: 46px; line-height: 1.08; letter-spacing: -.025em; font-weight: 700; margin: 0 0 18px; }
+  p { font-size: 20px; line-height: 1.5; margin: 0; color: #4f5b55; }
+  .dark p { color: #a3aea8; }
+  iframe { flex: none; border: 0; border-radius: 12px; background: var(--surface);
+           box-shadow: 0 30px 70px rgba(18, 60, 36, .22), 0 2px 8px rgba(18, 60, 36, .1); }
+  .dark iframe { box-shadow: 0 30px 70px rgba(0, 0, 0, .55), 0 0 0 1px #2b312e; }
+  /* Settings is taller than the image, so it runs off the bottom edge. */
+  .settings iframe { align-self: flex-start; margin-top: 72px; height: 800px; border-radius: 12px 12px 0 0; }
+
+  /* Sized explicitly: headless Chrome lays out narrow windows wider than the screenshot it takes. */
+  body.promo { width: 440px; height: 280px; justify-content: center; gap: 20px; padding: 0 30px; color: #fff;
+               background: linear-gradient(140deg, #22a355, #11713a); }
+  .promo .logo { width: 84px; height: 84px; border-radius: 21px; flex: none; color: #15803d;
+                 background: #fff; box-shadow: 0 10px 30px rgba(0, 0, 0, .18); }
+  .promo h1 { font-size: 30px; margin-bottom: 8px; }
+  .promo p { font-size: 15px; line-height: 1.4; color: rgba(255, 255, 255, .88); }
+</style>
+<body>
+<script type="module">
+  import { icons } from '../icons.js';
+
+  const SHOTS = {
+    '1-search': {
+      page: 'popup.html?q=gh+pr', width: 600,
+      title: 'Find any bookmark in a few keystrokes',
+      text: 'Press Ctrl+Shift+K (⇧⌘K on a Mac) and type a few letters of a title, folder or site. “gh pr” finds your GitHub pull requests.',
+    },
+    '2-most-used': {
+      page: 'popup.html?theme=dark', width: 600, dark: true,
+      title: 'Your go-to bookmarks, before you type',
+      text: 'Bookmarks you open often rise to the top, and pinned ones stay there. If a bookmark is already open, it switches to that tab.',
+    },
+    '3-settings': {
+      page: 'options.html?scope=Work,Docs', width: 712, settings: true,
+      title: 'Make it yours',
+      text: 'Light or dark theme, accent color, compact rows, and which folders to search. Everything stays on your device.',
+    },
+  };
+
+  const name = new URLSearchParams(location.search).get('shot');
+  if (name === 'promo') {
+    document.body.className = 'promo';
+    document.body.innerHTML = `<span class="logo">${icons.logo(52)}</span>
+      <div><h1>Bookmark Search</h1><p>Find any bookmark<br>in a few keystrokes</p></div>`;
+  } else {
+    const shot = SHOTS[name];
+    document.body.className = [shot.dark && 'dark', shot.settings && 'settings'].filter(Boolean).join(' ');
+    document.body.innerHTML = `<div class="copy">
+        <div class="brand"><span class="logo">${icons.logo(24)}</span>Bookmark Search</div>
+        <h1></h1><p></p></div>`;
+    document.querySelector('h1').textContent = shot.title;
+    document.querySelector('p').textContent = shot.text;
+
+    const frame = Object.assign(document.createElement('iframe'), { src: `../${shot.page}` });
+    frame.style.width = `${shot.width}px`;
+    document.body.append(frame);
+    // The popup sizes itself to its content, as it does in Chrome's popup bubble.
+    if (!shot.settings) setInterval(() => {
+      const height = frame.contentDocument?.documentElement.scrollHeight;
+      if (height) frame.style.height = `${height}px`;
+    }, 50);
+  }
+</script>
+</body>

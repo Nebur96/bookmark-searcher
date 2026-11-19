@@ -5,6 +5,7 @@
   "description": "Fuzzy-search your bookmarks from a hotkey and jump straight to them.",
   "type": "module",
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "package": "node scripts/package.mjs"
   }
 }
