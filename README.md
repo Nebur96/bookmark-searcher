@@ -19,6 +19,10 @@ A Chrome extension to fuzzy-search your bookmarks from a hotkey and jump straigh
 
 To change the hotkey, go to `chrome://extensions/shortcuts`.
 
+## Privacy
+
+Everything stays in your browser: see [PRIVACY.md](PRIVACY.md).
+
 ## Tests
 
 The search ranking, highlighting, tab switching and pruning in `search.js` are tested with Node's built-in test runner, so there's nothing to install (Node 20+):
@@ -35,4 +39,16 @@ The logo is drawn by `logo.js`, which is also used for the logo in the popup and
 
 ```sh
 node scripts/make-icons.mjs
+```
+
+## Releasing
+
+1. Bump `version` in `manifest.json` and `package.json`, and commit.
+2. `npm run package` zips the committed extension files into `dist/bookmark-search-<version>.zip`.
+3. Upload the zip in the [Chrome Web Store developer dashboard](https://chrome.google.com/webstore/devconsole). [`store/listing.md`](store/listing.md) has the listing text, permission justifications and privacy answers.
+
+The store screenshots and promo tile in `store/` show the popup and Settings with made-up bookmarks (`scripts/store-demo.js`). To regenerate them after a UI change (needs Chrome and an internet connection for favicons):
+
+```sh
+node scripts/make-store-images.mjs
 ```
